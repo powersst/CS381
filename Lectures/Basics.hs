@@ -81,16 +81,36 @@ half = avg 0
 data Result = OK Int | Error
   deriving (Eq,Show)
 
+-- instance Show Result where
+--     show (OK x) = show x ++ "!"
+--     show Error  = show ":-("
+
 -- | Safely divide two integers.
 safeDiv :: Int -> Int -> Result
 safeDiv x 0 = Error
 safeDiv x y = OK (x `div` y)
 
 -- | Add two results.
-addResults = undefined
+addResults :: Result -> Result -> Result
+addResults  (OK x)  (OK y)  = OK (x+y)
+addResults  _       _       = Error
+
+-- addResults r1 r2 = case r1 of
+--                     OK x -> case r2 of
+--                                 OK y -> OK (x+y)
+--                                 Error -> Error
+--                     Error -> Error
+-- addResults r1 r2 = case (r1,r2) of
+--                     (OK x, OK y) -> OK (x+y)
+--                                  -> Error
 
 -- | Get the integer from an OK result, or return 0 on an error.
-fromResult = undefined
+fromResult :: Result -> Int
+-- fromResult (OK x)   = x
+-- fromResult Error    = 0
+fromResult r = case r of
+                OK x    -> x
+                Error   -> 0
 
 
 
@@ -113,10 +133,14 @@ data List = Nil
   deriving (Eq,Show)
 
 -- | Compute the length of a list.
-listLength = undefined
+listLength :: List -> Int
+listLength Nil        = 0
+listLength (Cons h t) = 1 + listLength t
 
 -- | Compute the sum of the integers in a list.
-listSum = undefined
+listSum :: List -> Int
+listSum Nil        = 0
+listSum (Cons h t) = h + listSum t
 
 
 -------------------
@@ -127,25 +151,38 @@ listSum = undefined
 --   * cons, nil, and syntactic sugar
 --   * more recursive functions
 
+-- data [a] = []        -- Nil
+--          | a : [a]   -- Cons
+
 -- The definition of String in the Haskell Prelude looks like this:
 --
 --   type String = [Char]
 
 
 -- | Compute the sum of a list.
-length = undefined
+length :: [a] -> Int
+length []    = 0
+length (_:t) = 1 + length t
 
 -- | Compute the sum of an integer list.
-sum = undefined
+sum :: [Int] -> Int
+sum []    = 0
+sum (h:t) = h + sum t
 
 -- | Compute the product of the elements in a list.
-product = undefined
+product :: [Int] -> Int
+product []    = 1
+product (h:t) = h * product t
 
 -- | Double all the elements in an integer list.
-doubleAll = undefined
+doubleAll :: [Int] -> [Int]
+doubleAll []    = []
+doubleAll (h:t) = (2 * h) : doubleAll t
 
 -- | Flip all of the boolean values in a boolean list.
-notAll = undefined
+notAll :: [Bool] -> [Bool]
+notAll []    = []
+notAll (h:t) = not h : notAll t
 
 
 ----------------------------
