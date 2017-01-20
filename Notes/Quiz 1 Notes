@@ -1,0 +1,16 @@
+even :: Int -> Bool
+map :: (a -> b) -> [a] -> [b]
+
+What is the type of?
+
+ * map 3
+
+   map :: (a -> b) -> [a] -> [b]
+     3 :: Int =? (a -> b)  NO!
+   Type error :-(
+
+ * map even
+
+   map :: (a -> b) -> [a] -> [b]
+     even :: Int -> Bool =? a -> b  Yes: { a = Int, b = Bool }
+   map even :: [Int] -> [Bool]

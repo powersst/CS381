@@ -194,29 +194,36 @@ notAll (h:t) = not h : notAll t
 
 -- | Map a function over the elements in a list.
 map :: (a -> b) -> [a] -> [b]
-map = undefined
+map f []    = []
+map f (h:t) = f h : map f t
 
 -- | Reimplement doubleAll using map.
 doubleAll' :: [Int] -> [Int]
-doubleAll' l = undefined
+doubleAll' l = map (\x -> 2 * x) l
 
 -- | Reimplement notAll using map.
 notAll' :: [Bool] -> [Bool]
-notAll' l = undefined
+notAll' l = map not l
 
 -- | Fold a function over the elements of a list.
 simpleFold :: (a -> a -> a) -> a -> [a] -> a
-simpleFold = undefined
+simpleFold acc base []    = base
+simpleFold acc base (h:t) = acc h (simpleFold acc base t)
 
 -- | Fold a function over the elements in a list, allowing the type of the
 --   accumulated value to differ from the elements in the list.
 foldr :: (a -> b -> b) -> b -> [a] -> b
-foldr = undefined
+foldr acc base []    = base
+foldr acc base (h:t) = acc h (foldr acc base t)
 
 -- | Reimplement sum using foldr.
 sum' :: [Int] -> Int
-sum' l = undefined
+sum' = simpleFold (+) 0
 
 -- | Reimplement product using foldr.
 product' :: [Int] -> Int
-product' l = undefined
+product' = simpleFold (*) 1
+
+boolToInt :: Bool -> Int
+boolToInt True  = 1
+boolToInt False = 0
