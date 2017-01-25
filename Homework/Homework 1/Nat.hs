@@ -83,9 +83,9 @@ toInt (Succ n) = (toInt n) + 1
 --   True
 --   
 add :: Nat -> Nat -> Nat
-add x Zero = x
-add Zero y = y
-add x y    = y
+add (Succ x) Zero     = Succ x
+add Zero (Succ y)     = Succ y
+add (Succ x) (Succ y) = Succ (add (Succ x) (pred (Succ y)))
 
 
 -- | Subtract the second natural number from the first. Return zero
@@ -103,7 +103,10 @@ add x y    = y
 --   >>> sub one three
 --   Zero
 --
-sub = undefined
+sub :: Nat -> Nat -> Nat
+sub (Succ x) Zero     = Succ x
+sub Zero (Succ y)     = Succ y
+sub (Succ x) (Succ y) = pred (sub (Succ x) (pred (Succ y)))
 
 
 -- | Is the left value greater than the right?
@@ -117,7 +120,8 @@ sub = undefined
 --   >>> gt two two
 --   False
 --
-gt = undefined
+gt :: Nat -> Nat -> Bool
+gt (Succ x) (Succ y) = (sub (Succ x) (Succ y) /= Zero)
 
 
 -- | Multiply two natural numbers.
@@ -134,7 +138,10 @@ gt = undefined
 --   >>> toInt (mult three three)
 --   9
 --
-mult = undefined
+mult :: Nat -> Nat -> Nat
+mult Zero b = Zero
+mult a Zero = Zero
+mult a (Succ b) = add (mult a b) a  
 
 
 -- | Compute the sum of a list of natural numbers.
@@ -148,7 +155,8 @@ mult = undefined
 --   >>> toInt (sum [one,two,three])
 --   6
 --
-sum = undefined
+sum :: [Nat] -> Nat
+sum (a:b) = add a (sum b) 
 
 
 -- | An infinite list of all of the *odd* natural numbers, in order.
@@ -159,4 +167,4 @@ sum = undefined
 --   >>> toInt (sum (take 100 odds))
 --   10000
 --
-odds = undefined
+odds = Succ(Zero) : map (Succ . Succ) odds
