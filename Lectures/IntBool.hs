@@ -26,7 +26,7 @@ data Exp = Lit Int
 --  * what should the result be?
 x = Add (Lit 2) (Add (Lit 3) (Lit 4))  -- 9 :: Int
 y = Not (Equ x (Lit 10))               -- True :: Bool
-z = Not x                              -- type error! 
+z = Not x                              -- type error!
 
 
 -- 2. Identify/define the semantic domain for this language
@@ -54,4 +54,14 @@ data Value = I Int
 
 -- 3. Define the semantic function
 sem :: Exp -> Value
-
+sem (Lit i)   = I i
+sem (Add l r) = case (sem l, sem r) of
+                  (I i, I j) -> I (i+j)
+                  _          -> TypeError
+sem (Equ l r) = case (sem l, sem r) of
+                  (I i, I j) -> B (i == j)
+                  (B a, B b) -> B (a == b)
+                  _          -> TypeError
+sem (Not e)   = case sem e of
+                  B b -> B (not b)
+                  _   -> TypeError
