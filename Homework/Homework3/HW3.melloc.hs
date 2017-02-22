@@ -53,7 +53,6 @@ cmd :: Cmd -> State -> (State, Maybe Line)
 cmd (Pen m) (_,(x,y))           = ((m,(x,y)),Nothing)
 cmd (Move x y) (Up,_)           = ((Up,(x,y)),Nothing)
 cmd (Move x2 y2) (Down,(x1,y1)) = ((Down,(x2,y2)),Just ((x1,y1),(x2,y2)))
--- cmd (Move x y) _ =
 
 
 -- | Semantic function for Prog.
@@ -64,7 +63,9 @@ cmd (Move x2 y2) (Down,(x1,y1)) = ((Down,(x2,y2)),Just ((x1,y1),(x2,y2)))
 --   >>> prog (steps 2 0 0) start
 --   ((Down,(2,2)),[((0,0),(0,1)),((0,1),(1,1)),((1,1),(1,2)),((1,2),(2,2))])
 prog :: Prog -> State -> (State, [Line])
-prog = undefined
+prog (command:remainingCommands) s =
+  let (newS, maybeLine) = cmd command s (finalS, remainingLines) =
+  prog remainingCommands newS in (finalS, maybe remainingLines ( : remainingLines) maybeLine)
 
 
 --
