@@ -40,8 +40,8 @@ stmt (While t sb)   d w r = let b = test t w r
                             in if b then stmt (While t sb) d w r
                                     else OK w r
 stmt (Block [_])    _ _ _ = undefined
-stmt (Block [])    _ _ _ = undefined
-stmt (Block (_:_))    _ _ _ = undefined
+stmt (Block [])     _ _ _ = undefined
+stmt (Block (_:_))  _ _ _ = undefined
 -- stmt (Block [ss]) d w r  = stmt ss d w r
 -- stmt [] d w r = OK w r
 -- stmt (s:ss) d w r = stmt ss (stmt s d w r)
