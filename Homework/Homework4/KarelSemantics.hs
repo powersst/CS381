@@ -11,7 +11,7 @@ import KarelState
 test :: Test -> World -> Robot -> Bool
 test (Not t)    w r = not (test t w r)
 test (Facing c) _ r = getFacing r == c
-test (Clear _)  _ _ = undefined
+test (Clear d)  w r = isClear (relativePos d r) w
 test Beeper     w r = hasBeeper (getPos r) w
 test Empty      _ r = isEmpty r
 
@@ -39,12 +39,8 @@ stmt (If t st se)  d w r = let b = test t w r
 stmt (While t sb)  d w r = let b = test t w r
                             in if b then stmt (While t sb) d w r
                                     else OK w r
-stmt (Block [_])   _ _ _ = undefined
-stmt (Block [])    _ _ _ = undefined
-stmt (Block (_:_)) _ _ _ = undefined
--- stmt (Block [ss]) d w r  = stmt ss d w r
--- stmt [] d w r = OK w r
--- stmt (s:ss) d w r = stmt ss (stmt s d w r)
+-- stmt (Block [])    _ w r = OK w r
+-- stmt (Block (h:t)) d w r = case
 
 -- | Run a Karel program.
 --prog :: Prog -> World -> Robot -> Result
