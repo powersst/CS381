@@ -1,3 +1,5 @@
+-- Christian Mello (melloc), Steven Powers (powersst), Erik Watterson (watterse)
+
 module KarelSemantics where
 
 import Prelude hiding (Either(..))
