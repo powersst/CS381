@@ -87,8 +87,32 @@ cousin(X,Z) :- uncle(Y,X), parent(Y,Z).
  ancestor(X,Y) :- parent(P,Y), ancestor(X,P).
 
 % Extra credit: Define the predicate `related/2`.
+related(X, Y) :- parent(Z, X), married(Z, Y);
+                 parent(Y, X);
+                 parent(Z, Y), married(Z, X);
+                 parent(X, Y);
 
+                 (sibling(X, Y); sibling(Y, X));
 
+                 (siblingInLaw(X, Y); siblingInLaw(Y, X));
+                 (siblingInLaw(X, Z), parent(Y, Z));
+                 (siblingInLaw(Z, Y), parent(X, Z));
+
+                 (siblingInLaw(X, Z), parent(GP, Z), parent(GP, Y));
+                 (siblingInLaw(X, Z), parent(GP, Z), parent(GP, C), parent(C, Y));
+                 (siblingInLaw(Z, Y), parent(GP, Z), parent(GP, X));
+                 (siblingInLaw(Z, Y), parent(GP, Z), parent(GP, C), parent(C, X));
+
+                 (uncle(X, Y); uncle(Y, X));
+                 (aunt(X, Y); aunt(Y, X));
+
+                 cousin(X, Y);
+                 cousin(Y, X);
+
+                 (grandparent(Y, X); grandparent(X, Y));
+                 cousin(GP, Y), grandparent(GP, X);
+                 cousin(X, GP), grandparent(Y, GP);
+                 cousin(Y, GP), grandparent(X, GP).
 
 %%
 % Part 2. Language implementation
