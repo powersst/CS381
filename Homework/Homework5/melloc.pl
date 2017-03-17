@@ -120,7 +120,22 @@ related(X, Y) :- parent(Z, X), married(Z, Y);
 
 % 1. Define the predicate `cmd/3`, which describes the effect of executing a
 %    command on the stack.
+checkType(X) :- number(X).
+checkType(X) :- string(X).
+checkType(X) :- bool(X).
 
+bool(t).
+bool(f).
+
+
+cmd(C,S1,S2) :- checkType(C), S2 = [C|S1].
+cmd(C, [H,H2|T], S2):- C == add, D is H+H2, S2 = [D|T].
+cmd(C, [H,H2|T], S2)   :- C == lte, H =< H2, D = t, S2 = [D|T].
+cmd(C, [H,H2|T], S2)   :- C == lte, H > H2, D = f, S2 = [D|T].
+cmd(if(A,_),[H1|T],S2) :- H1 == t, S3 = A,  prog(S3,T,S2).
+cmd(if(_,B),[H1|T],S2) :- H1 == f, S3 = B,  prog(S3,T,S2).
 
 % 2. Define the predicate `prog/3`, which describes the effect of executing a
-%    program on the stack.
+%    program on the stack
+prog([], S1, S2) :- S1 = S2.
+prog([H|T], S1, S2) :- cmd(H, S1, X), prog(T, X, S2).
