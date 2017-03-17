@@ -1,3 +1,5 @@
+% Christian Mello (melloc), Steven Powers (powersst), Erik Watterson (watterse)
+
 % Here are a bunch of facts describing the Simpson's family tree.
 % Don't change them!
 
@@ -132,8 +134,8 @@ cmd(C,S1,S2) :- checkType(C), S2 = [C|S1].
 cmd(C, [H,H2|T], S2):- C == add, D is H+H2, S2 = [D|T].
 cmd(C, [H,H2|T], S2)   :- C == lte, H =< H2, D = t, S2 = [D|T].
 cmd(C, [H,H2|T], S2)   :- C == lte, H > H2, D = f, S2 = [D|T].
-cmd(if(A,_),[H1|T],S2) :- H1 == t, S3 = A,  prog(S3,T,S2).
-cmd(if(_,B),[H1|T],S2) :- H1 == f, S3 = B,  prog(S3,T,S2).
+cmd(if(P1,_),[H1|T],S2) :- H1 == t, S3 = P1,  prog(S3,T,S2).
+cmd(if(_,P2),[H1|T],S2) :- H1 == f, S3 = P2,  prog(S3,T,S2).
 
 % 2. Define the predicate `prog/3`, which describes the effect of executing a
 %    program on the stack
